@@ -1,0 +1,45 @@
+@baseUrl = http://localhost:3000/api
+@resourceName = categories
+# Categories
+
+# @name getAll
+GET {{baseUrl}}/{{resourceName}}
+
+#####
+
+# @name filter
+GET {{baseUrl}}/{{resourceName}}?name=Home
+#####
+
+# @name paginate
+GET {{baseUrl}}/{{resourceName}}?_page=2&_limit=2
+
+#####
+
+# @name sort
+GET {{baseUrl}}/{{resourceName}}?_sort=name&_order=desc
+
+#####
+
+# @name add
+POST {{baseUrl}}/{{resourceName}}
+Content-Type:  application/json
+
+{
+    "name":"Laptop"
+}
+
+#####
+
+# @name update
+PATCH {{baseUrl}}/{{resourceName}}/2
+Content-Type:  application/json
+
+{
+    "name":"New Laptop"
+}
+
+#####
+
+# @name remove
+DELETE {{baseUrl}}/{{resourceName}}/2

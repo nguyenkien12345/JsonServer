@@ -1,0 +1,90 @@
+https://github.com/typicode/json-server
+
+1)Install JSON Server: npm install -g json-server
+2)Run: json-server db.json -> Nó sẽ tự tạo ra Resources
+3)Test API: Chạy các đường dẫn trên Resources (dán ra google)
+- http://localhost:3000/categories
+- http://localhost:3000/products
+- http://localhost:3000/profile
+- http://localhost:3000/categories/1/products (Mình muốn lấy Category 1 và lấy những sản phẩm của Category 1)
+
+1) Gõ npm init để nó khởi tạo package.json
+package name: (jsonserver)
+version: (1.0.0)
+description: demo how to use json.server
+entry point: (index.js) main.js
+test command:
+git repository:
+keywords: json-server
+author: Nguyen Kien
+license: (ISC) MIT (nghĩa là free) -> YES
+2) git init (Khởi tạo git) -> Sau đó tạo file .gitignore -> 
+Lên google gõ gitignore generator hoặc vào thẳng https://www.toptal.com/developers/gitignore -> gõ Node (vì ta làm trên môi trường node) -> Create
+Sau đó copy hết bỏ vào file .gitignore của mình
+3)npm i json-server -> npm i --save--dev nodemon
+4) Tạo file main.js -> vào trang chủ json-server -> Module -> Custom routes exampe -> Copy code dán vào file main.js
+5) Vào package.json -> Đoạn scripts: thêm 2 dòng
+- "dev": "nodemon main.js"; //Nếu chạy bằng nodemon thì khi thay đổi trên file main.js nó sẽ tự động restart lại server 
+--> Tương ứng câu lệnh npm run dev
+- "start": "node main.js";  //Nếu chạy bằng node thì khi thay đổi trên file main.js nó sẽ không restart lại server
+--> Tương ứng câu lệnh npm start
+
+1) Cài REST CLIENT trong visual code
+2) Tạo ra file test.http sau đó tự định nghĩa các api
+- GET http://localhost:3000/categories
+Tôi muốn trong đường dẫn có thêm chữ api. Đường dẫn phải là http://localhost:3000/api/categories .Sửa lại code trong main.js
+// Use default router
+server.use('/api',router)
+server.listen(3000, () => {
+  console.log('JSON Server is running')
+})
+3) PATCH thường dùng cho update
+4) Khi dùng phương thức POST thì hầu như jsonServer sẽ tạo cho ta 2 trường createdAt, updatedAt trong đoạn code
+server.use(jsonServer.bodyParser)
+server.use((req, res, next) => {
+  if (req.method === 'POST') {
+    req.body.createdAt = Date.now()
+    req.body.updatedAt = Date.now()
+  }
+  // Continue to JSON Server router
+  next()
+})
+
+1) Vào trang chủ json-server trong mục Extras có mục tên là Generate random data -> dùng thư viện faker.js -> npm instal --save-dev faker
+2) Tạo ra 1 file generate-data.js. Vào package.json thêm 1 câu lệnh trong scripts: 
+"generate-data": "nodemon generate-data.js" -> đồng thời cập nhật lại câu lệnh "start": "npm run generate-data && node main.js" có nghĩa là khi ta npm start nó sẽ thực hiện 1 lúc 2 lệnh
+
+1)  Vào trang chủ json-server trong mục routes
+POST /posts => Add cái mới
+PUT /posts/1 => update toàn phần
+PATCH /posts/1 => update 1 phần
+Đọc tài liệu trong routes để làm phần tìm kiếm, lọc và phân trang
+Lưu ý sau mỗi lần random nó lại ra dữ liệu khác nhau nên không phải lúc nào cũng đảm bảo điều kiện lọc tìm kiếm giống như ban đầu được
+
+Lưu ý khi thao tác file json thì dòng cuối cùng tuyệt đối luôn luôn không có dấu ,
+      "categoryId": "eb7a55e7-ce18-48fc-b600-289cbfb495e8",
+      "id": "662ccedd-e837-4f37-9b53-93a2f7f4e9ce",
+      "name": "Refined Rubber Computer",
+      "color": "blue",
+      "price": 608,
+      "description": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      "createdAt": 1616986524371,
+      "updateAt": 1616986524371,
+      "thumbnailUrl": "http://placeimg.com/400/400"
+      
+1) Khi ta dùng những phương thức như getAll,filter,paginate,sort... nó sẽ luôn có: 
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Vary: Origin, Accept-Encoding
+Access-Control-Allow-Credentials: true
+Cache-Control: no-cache
+Pragma: no-cache
+Expires: -1
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Content-Length: 578
+ETag: W/"242-Zplg+JurORZ1AycxGRVZJz5s570"
+Date: Thu, 01 Apr 2021 02:54:29 GMT
+Connection: close
+Những dữ liệu này gọi là header
+2) Cài query-string: npm install query-string và gọi thư viện đó ra
